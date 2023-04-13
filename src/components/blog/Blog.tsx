@@ -1,6 +1,8 @@
 import {Stack} from '@mui/material';
 import {FC} from 'react';
 import styled from 'styled-components';
+import {useAppSelector} from '@src/hooks/redux';
+
 import BlogItem from '../blogItem/BlogItem';
 
 const BlogItemsWrapper = styled(Stack)`
@@ -10,12 +12,16 @@ const BlogItemsWrapper = styled(Stack)`
   gap: 1rem;
 `;
 
-const BlogItems: FC = () => {
+const Blog: FC = () => {
+  const {blog} = useAppSelector((state) => state.Blog);
+
   return (
     <BlogItemsWrapper>
-      <BlogItem />
+      {blog.map((e) => (
+        <BlogItem key={e.id} {...e} />
+      ))}
     </BlogItemsWrapper>
   );
 };
 
-export default BlogItems;
+export default Blog;
