@@ -1,4 +1,4 @@
-import {render, screen} from '@testing-library/react';
+import {fireEvent, render, screen} from '@testing-library/react';
 import PostButton, {IPostButtonProps} from './PostButton';
 
 describe('postButton', () => {
@@ -16,5 +16,10 @@ describe('postButton', () => {
     const linkElement = screen.getByRole('button');
     expect(linkElement).toMatchSnapshot();
   });
-  test('postButton called', () => {});
+  test('postButton called', () => {
+    render(<PostButton {...customProps} />);
+    const linkElement = screen.getByRole('button');
+    fireEvent.click(linkElement);
+    expect(action).toHaveBeenCalled();
+  });
 });
