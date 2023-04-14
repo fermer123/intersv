@@ -6,3 +6,10 @@ export interface IBlog {
   raiting: number;
   date: number;
 }
+
+export interface IPost {
+  id: number;
+  title: string;
+  body: string;
+  comments: IBlog[];
+}

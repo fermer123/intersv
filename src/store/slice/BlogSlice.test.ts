@@ -3,7 +3,6 @@ import {setupStore} from '..';
 import BlogSlice, {
   IBlogState,
   addNewBlogItem,
-  addRaiting,
   subtractRaiting,
 } from './BlogSlice';
 
