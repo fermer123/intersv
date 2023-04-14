@@ -1,6 +1,11 @@
 import {setupStore} from '..';
 // eslint-disable-next-line import/no-named-as-default
-import BlogSlice, {IBlogState, addNewBlogItem, addRaiting} from './BlogSlice';
+import BlogSlice, {
+  IBlogState,
+  addNewBlogItem,
+  addRaiting,
+  subtractRaiting,
+} from './BlogSlice';
 
 const store = setupStore();
 
@@ -66,6 +71,52 @@ describe('BlogSlice', () => {
     const newItem = state.posts?.find((e) => e.id === 1);
     const newItemAfterPost = newItem?.comments.find((e) => e.id === 2);
     expect(newItemAfterPost.comment).toBe('test');
+  });
+  test('subtractRaiting', () => {
+    const previousState: IBlogState = {
+      error: false,
+      loading: false,
+      posts: [
+        {
+          id: 1,
+          body: '123',
+          title: '123',
+          comments: [
+            {
+              id: 1,
+              comment: 'asd',
+              email: 'qwe@mail.ru',
+              raiting: -9,
+              name: 'qwe',
+              date: 12102023,
+            },
+          ],
+        },
+      ],
+    };
+    expect(
+      BlogSlice(previousState, subtractRaiting({id: 1, ParentId: 1})),
+    ).toEqual({
+      error: false,
+      loading: false,
+      posts: [
+        {
+          id: 1,
+          body: '123',
+          title: '123',
+          comments: [
+            {
+              id: 1,
+              comment: 'asd',
+              email: 'qwe@mail.ru',
+              raiting: -10,
+              name: 'qwe',
+              date: 12102023,
+            },
+          ],
+        },
+      ],
+    });
   });
   test('addRaiting', () => {
     const previousState: IBlogState = {
