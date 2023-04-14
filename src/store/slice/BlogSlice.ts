@@ -1,7 +1,7 @@
 import {PayloadAction, createSlice} from '@reduxjs/toolkit';
 import {IBlog} from '@src/types/types';
 
-interface IBlogState {
+export interface IBlogState {
   blog: IBlog[];
 }
 
