@@ -5,6 +5,10 @@ import {useAppSelector} from '@src/hooks/redux';
 import {IBlog} from '@src/types/types';
 import BlogItem from '../blogItem/BlogItem';
 
+interface IBlogProps {
+  parentId: number;
+}
+
 const BlogItemsWrapper = styled(Stack)`
   display: flex;
   justify-content: center;
@@ -12,14 +16,22 @@ const BlogItemsWrapper = styled(Stack)`
   gap: 1rem;
 `;
 
-const Blog: FC = () => {
+const Blog: FC<IBlogProps> = ({parentId}) => {
   const comments = useAppSelector((state) => state.Blog.comments);
 
   return (
     <BlogItemsWrapper>
-      {comments?.map((e: IBlog) => (
-        <BlogItem key={e.id} {...e} />
-      ))}
+      {comments?.map((comment: IBlog) => {
+        const isInArray = comments.some((e) => e.parentId === parentId);
+        return (
+          <BlogItem
+            key={comment.id}
+            {...comment}
+            parentId={parentId}
+            isInArray={isInArray}
+          />
+        );
+      })}
     </BlogItemsWrapper>
   );
 };

@@ -2,6 +2,8 @@ import {Card, CardContent, Typography} from '@mui/material';
 import {IPost} from '@src/types/types';
 import {FC} from 'react';
 import styled from 'styled-components';
+import Header from '../head/Header';
+import Blog from '../blog/Blog';
 
 const PostWrapperItem = styled(Card)`
   margin: 0 auto;
@@ -19,13 +21,15 @@ const PostWrapperItemProps = styled(Typography)`
   text-align: center;
 `;
 
-const PostItem: FC<IPost> = ({body, title}) => {
+const PostItem: FC<IPost> = ({id, body, title}) => {
   return (
     <PostWrapperItem>
       <CardContent>
         <PostWrapperItemProps>{title}</PostWrapperItemProps>
         <PostWrapperItemProps>{body}</PostWrapperItemProps>
       </CardContent>
+      <Header parentId={id} />
+      <Blog parentId={id} />
     </PostWrapperItem>
   );
 };

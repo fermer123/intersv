@@ -99,7 +99,7 @@ describe('BlogSlice', () => {
       ],
     };
     expect(
-      BlogSlice(previousState, subtractRaiting({id: 1, ParentId: 1})),
+      BlogSlice(previousState, subtractRaiting({id: 1, parentId: 1})),
     ).toEqual({
       error: false,
       loading: false,
@@ -146,7 +146,7 @@ describe('BlogSlice', () => {
         },
       ],
     };
-    expect(BlogSlice(previousState, addRaiting({id: 1, ParentId: 1}))).toEqual({
+    expect(BlogSlice(previousState, addRaiting({id: 1, parentId: 1}))).toEqual({
       error: false,
       loading: false,
       posts: [

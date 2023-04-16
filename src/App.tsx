@@ -1,9 +1,7 @@
 import {Container} from '@mui/material';
 import {FC} from 'react';
 import styled from 'styled-components';
-import Blog from './components/blog/Blog';
-import Header from './components/head/Header';
-import Posts from './components/posts/posts';
+import Posts from './components/posts/Posts';
 
 const AppContainer = styled(Container)`
   margin: 0 auto;
@@ -15,8 +13,6 @@ const App: FC = () => {
   return (
     <AppContainer>
       <Posts />
-      {/* <Header />
-      <Blog /> */}
     </AppContainer>
   );
 };

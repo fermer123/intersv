@@ -1,22 +1,35 @@
 import {Container, Stack} from '@mui/material';
 import styled from 'styled-components';
 import useInput from '@src/hooks/Input';
-import {useCallback} from 'react';
+import {useCallback, FC} from 'react';
 import {useAppDispatch} from '@src/hooks/redux';
 import {addNewBlogItem} from '@src/store/slice/BlogSlice';
 import {v4 as uuidv4} from 'uuid';
 import Input from '../input/Input';
 import PostButton from '../PostButton/PostButton';
 
+interface IHeaderProps {
+  parentId: number;
+}
+
 const InputFormWrapper = styled(Container)`
-  padding: 0;
-  margin: 30 auto;
+  padding: 0 10;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.5rem;
 `;
 
-const Header = () => {
+const TopContent = styled(Stack)`
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  @media (max-width: 520px) {
+    flex-direction: column;
+  }
+`;
+
+const Header: FC<IHeaderProps> = ({parentId}) => {
   const dispatch = useAppDispatch();
   const name = useInput();
   const email = useInput();
@@ -41,7 +54,7 @@ const Header = () => {
     ) {
       dispatch(
         addNewBlogItem({
-          parentId: 1, // добавить
+          parentId, // добавить
           id: parseInt(uuidv4(), 36),
           name: name.value,
           comment: comment.value,
@@ -55,11 +68,11 @@ const Header = () => {
       comment.setValue('');
       email.setValue('');
     }
-  }, [comment, dispatch, email, isValidEmail, name]);
+  }, [comment, dispatch, email, isValidEmail, name, parentId]);
 
   return (
     <InputFormWrapper>
-      <Stack direction='row' spacing={2}>
+      <TopContent>
         <Input label='Введите имя' name='name' {...name} />
         <Input
           label='Введите e-mail'
@@ -67,7 +80,7 @@ const Header = () => {
           name='email'
           {...email}
         />
-      </Stack>
+      </TopContent>
       <Input label='Введите комментарий' name='comment' {...comment} />
       <PostButton postData={postDataMemo} />
     </InputFormWrapper>
