@@ -41,6 +41,7 @@ const Header = () => {
     ) {
       dispatch(
         addNewBlogItem({
+          parentId: 1, // добавить
           id: parseInt(uuidv4(), 36),
           name: name.value,
           comment: comment.value,

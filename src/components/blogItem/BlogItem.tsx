@@ -14,7 +14,6 @@ import styled from 'styled-components';
 import {addRaiting, subtractRaiting} from '@src/store/slice/BlogSlice';
 
 const CommentWrapperItem = styled(Card)`
-  padding: 15px 30px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -45,8 +44,17 @@ const CommentWrapperItemBottomContent = styled(CardContent)`
   align-self: flex-end;
   padding: 0 0;
 `;
-
-const BlogItem: FC<IBlog> = ({name, raiting, id, comment, date}) => {
+interface IBlogItemProps extends IBlog {
+  parentId: number;
+}
+const BlogItem: FC<IBlogItemProps> = ({
+  name,
+  raiting,
+  id,
+  comment,
+  date,
+  parentId,
+}) => {
   const [updateTimePassed, setUpdateTimePassed] = useState<string>();
   const [open, setOpen] = useState<boolean>(true);
   const dispatch = useAppDispatch();
@@ -94,8 +102,13 @@ const BlogItem: FC<IBlog> = ({name, raiting, id, comment, date}) => {
             <CommentWrapperItemTopContentInfoRaiting>
               <Typography color='#2196f3'>Рейтинг: {raiting}</Typography>
               <ButtonGroup variant='outlined'>
-                <Button onClick={() => dispatch(subtractRaiting(id))}>-</Button>
-                <Button onClick={() => dispatch(addRaiting(id))}>+</Button>
+                <Button
+                  onClick={() => dispatch(subtractRaiting({id, parentId}))}>
+                  -
+                </Button>
+                <Button onClick={() => dispatch(addRaiting({id, parentId}))}>
+                  +
+                </Button>
               </ButtonGroup>
             </CommentWrapperItemTopContentInfoRaiting>
           </CommentWrapperItemTopContent>

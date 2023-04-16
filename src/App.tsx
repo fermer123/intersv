@@ -3,6 +3,7 @@ import {FC} from 'react';
 import styled from 'styled-components';
 import Blog from './components/blog/Blog';
 import Header from './components/head/Header';
+import Posts from './components/posts/posts';
 
 const AppContainer = styled(Container)`
   margin: 0 auto;
@@ -13,8 +14,9 @@ const AppContainer = styled(Container)`
 const App: FC = () => {
   return (
     <AppContainer>
-      <Header />
-      <Blog />
+      <Posts />
+      {/* <Header />
+      <Blog /> */}
     </AppContainer>
   );
 };
