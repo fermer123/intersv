@@ -13,6 +13,7 @@ const BlogItemsWrapper = styled(Stack)`
   display: flex;
   justify-content: center;
   flex-direction: column;
+  padding: 0 10 1rem;
   gap: 1rem;
 `;
 
