@@ -1,8 +1,8 @@
 import {useAppDispatch, useAppSelector} from '@src/hooks/redux';
-import fetchPost from '@src/store/actions/blogAction';
 import {FC, useEffect} from 'react';
 import {Stack} from '@mui/material';
 import styled from 'styled-components';
+import {fetchData} from '@src/store/slice/BlogSlice';
 import PostItem from '../postItem/PostItem';
 
 const PostsItemsWrapper = styled(Stack)`
@@ -17,7 +17,7 @@ const Posts: FC = () => {
   const posts = useAppSelector((state) => state.Blog.posts);
 
   useEffect(() => {
-    dispatch(fetchPost());
+    dispatch(fetchData());
   }, [dispatch]);
 
   return (

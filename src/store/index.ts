@@ -1,21 +1,26 @@
-import {configureStore, combineReducers} from '@reduxjs/toolkit';
+import {
+  configureStore,
+  combineReducers,
+  getDefaultMiddleware,
+} from '@reduxjs/toolkit';
 // eslint-disable-next-line import/no-named-as-default
 import createSagaMiddleware from 'redux-saga';
 // eslint-disable-next-line import/no-named-as-default
 import BlogSlice from './slice/BlogSlice';
+import RootSaga from './postsSaga/PostSaga';
 
 const sagaMiddleware = createSagaMiddleware();
-const middleware = [sagaMiddleware];
 const rootReducer = combineReducers({
   Blog: BlogSlice,
 });
 
 export const setupStore = () => {
-  return configureStore({
+  const store = configureStore({
     reducer: rootReducer,
-    middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(middleware),
+    middleware: [...getDefaultMiddleware({thunk: false}), sagaMiddleware],
   });
+  sagaMiddleware.run(RootSaga);
+  return store;
 };
 
 export type RootState = ReturnType<typeof rootReducer>;

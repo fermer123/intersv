@@ -54,7 +54,7 @@ const Header: FC<IHeaderProps> = ({parentId}) => {
     ) {
       dispatch(
         addNewBlogItem({
-          parentId, // добавить
+          parentId,
           id: parseInt(uuidv4(), 36),
           name: name.value,
           comment: comment.value,

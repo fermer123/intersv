@@ -46,7 +46,6 @@ const CommentWrapperItemBottomContent = styled(CardContent)`
 `;
 interface IBlogItemProps extends IBlog {
   parentId: number;
-  isInArray: boolean;
 }
 const BlogItem: FC<IBlogItemProps> = ({
   name,
@@ -56,7 +55,6 @@ const BlogItem: FC<IBlogItemProps> = ({
   date,
   parentId,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  isInArray,
 }) => {
   const [updateTimePassed, setUpdateTimePassed] = useState<string>();
   const [open, setOpen] = useState<boolean>(true);

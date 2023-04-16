@@ -23,14 +23,9 @@ const Blog: FC<IBlogProps> = ({parentId}) => {
     <BlogItemsWrapper>
       {comments?.map((comment: IBlog) => {
         const isInArray = comments.some((e) => e.parentId === parentId);
-        return (
-          <BlogItem
-            key={comment.id}
-            {...comment}
-            parentId={parentId}
-            isInArray={isInArray}
-          />
-        );
+        return isInArray ? (
+          <BlogItem key={comment.id} {...comment} parentId={parentId} />
+        ) : null;
       })}
     </BlogItemsWrapper>
   );

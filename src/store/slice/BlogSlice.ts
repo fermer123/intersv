@@ -20,7 +20,7 @@ export const BlogSlice = createSlice({
   name: 'BlogSlice',
   initialState,
   reducers: {
-    fetching: (state) => {
+    fetchData: (state) => {
       state.loading = true;
     },
     fetchSuccess(state, action: PayloadAction<IPost[]>) {
@@ -28,7 +28,7 @@ export const BlogSlice = createSlice({
       state.posts = action.payload;
       state.error = false;
     },
-    fetchError: (state) => {
+    fetchDataError: (state) => {
       state.loading = false;
       state.error = true;
     },
@@ -55,5 +55,12 @@ export const BlogSlice = createSlice({
     },
   },
 });
-export const {addNewBlogItem, addRaiting, subtractRaiting} = BlogSlice.actions;
+export const {
+  addNewBlogItem,
+  addRaiting,
+  subtractRaiting,
+  fetchData,
+  fetchSuccess,
+  fetchDataError,
+} = BlogSlice.actions;
 export default BlogSlice.reducer;
