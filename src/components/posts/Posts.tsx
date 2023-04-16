@@ -1,6 +1,6 @@
 import {useAppDispatch, useAppSelector} from '@src/hooks/redux';
-import {FC, useEffect} from 'react';
-import {Stack} from '@mui/material';
+import {FC, useEffect, useCallback, useState, useMemo} from 'react';
+import {Pagination, Stack} from '@mui/material';
 import styled from 'styled-components';
 import {fetchData} from '@src/store/slice/BlogSlice';
 import PostItem from '../postItem/PostItem';
@@ -13,6 +13,10 @@ const PostsItemsWrapper = styled(Stack)`
 `;
 
 const Posts: FC = () => {
+  const [currPage, setCurrPage] = useState<number>(1);
+
+  const [itemsPerPage] = useState(5);
+
   const dispatch = useAppDispatch();
   const posts = useAppSelector((state) => state.Blog.posts);
   const error = useAppSelector((state) => state.Blog.error);
@@ -20,6 +24,24 @@ const Posts: FC = () => {
   useEffect(() => {
     dispatch(fetchData());
   }, [dispatch]);
+  const lastItemIndex = currPage * itemsPerPage;
+  const firstItemIndex = lastItemIndex - itemsPerPage;
+
+  const pageNumber = useMemo(() => {
+    const pageNumberCells: number[] = [];
+    for (let i = 1; i <= Math.ceil(posts.length / itemsPerPage); i += 1) {
+      pageNumberCells.push(i);
+    }
+    return pageNumberCells;
+  }, [itemsPerPage, posts.length]);
+
+  const currentItem = posts.slice(firstItemIndex, lastItemIndex);
+  const pagination = useCallback(
+    (event: React.ChangeEvent<unknown>, value: number) => {
+      setCurrPage(value);
+    },
+    [setCurrPage],
+  );
 
   if (loading) {
     return <h1>loading</h1>;
@@ -30,9 +52,15 @@ const Posts: FC = () => {
   }
   return (
     <PostsItemsWrapper>
-      {posts?.map((e) => (
+      {currentItem?.map((e) => (
         <PostItem key={e.id} {...e} />
       ))}
+
+      <Pagination
+        page={currPage}
+        count={pageNumber.length}
+        onChange={pagination}
+      />
     </PostsItemsWrapper>
   );
 };
