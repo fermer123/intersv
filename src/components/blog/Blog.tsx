@@ -18,15 +18,12 @@ const BlogItemsWrapper = styled(Stack)`
 
 const Blog: FC<IBlogProps> = ({parentId}) => {
   const comments = useAppSelector((state) => state.Blog.comments);
-
+  const isInArray = comments.filter((e) => e.parentId === parentId);
   return (
     <BlogItemsWrapper>
-      {comments?.map((comment: IBlog) => {
-        const isInArray = comments.some((e) => e.parentId === parentId);
-        return isInArray ? (
-          <BlogItem key={comment.id} {...comment} parentId={parentId} />
-        ) : null;
-      })}
+      {isInArray?.map((comment: IBlog) => (
+        <BlogItem key={comment.id} {...comment} parentId={parentId} />
+      ))}
     </BlogItemsWrapper>
   );
 };

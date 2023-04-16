@@ -35,6 +35,7 @@ export const BlogSlice = createSlice({
     addNewBlogItem: (state, action: PayloadAction<IBlog>) => {
       state.comments.push(action.payload);
     },
+
     addRaiting: (
       state,
       action: PayloadAction<{id: number; parentId: number}>,
@@ -55,6 +56,7 @@ export const BlogSlice = createSlice({
     },
   },
 });
+
 export const {
   addNewBlogItem,
   addRaiting,

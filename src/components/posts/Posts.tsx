@@ -15,11 +15,19 @@ const PostsItemsWrapper = styled(Stack)`
 const Posts: FC = () => {
   const dispatch = useAppDispatch();
   const posts = useAppSelector((state) => state.Blog.posts);
-
+  const error = useAppSelector((state) => state.Blog.error);
+  const loading = useAppSelector((state) => state.Blog.loading);
   useEffect(() => {
     dispatch(fetchData());
   }, [dispatch]);
 
+  if (loading) {
+    return <h1>loading</h1>;
+  }
+
+  if (error) {
+    return <h1>error</h1>;
+  }
   return (
     <PostsItemsWrapper>
       {posts?.map((e) => (

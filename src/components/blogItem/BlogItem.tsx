@@ -19,6 +19,7 @@ const CommentWrapperItem = styled(Card)`
   flex-direction: column;
   gap: 1rem;
   width: 100%;
+  padding: 0 10;
   border: 1px solid #2196f3;
 `;
 const CommentWrapperItemTopContent = styled(CardContent)`
