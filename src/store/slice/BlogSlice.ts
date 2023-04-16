@@ -40,18 +40,14 @@ export const BlogSlice = createSlice({
       state,
       action: PayloadAction<{id: number; parentId: number}>,
     ) => {
-      const element = state.comments.find(
-        (e) => e.id === action.payload.parentId && e.id === action.payload.id,
-      );
+      const element = state.comments.find((e) => e.id === action.payload.id);
       element.raiting += 1;
     },
     subtractRaiting: (
       state,
       action: PayloadAction<{id: number; parentId: number}>,
     ) => {
-      const element = state.comments.find(
-        (e) => e.id === action.payload.parentId && e.id === action.payload.id,
-      );
+      const element = state.comments.find((e) => e.id === action.payload.id);
       element.raiting -= 1;
     },
   },
