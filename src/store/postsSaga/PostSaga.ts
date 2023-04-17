@@ -1,11 +1,10 @@
 import {put, call, takeLatest} from 'redux-saga/effects';
 import {IPost} from '@src/types/types';
-
-import axios from 'axios';
+import axios from '@src/axios';
 import {BlogSlice} from '../slice/BlogSlice';
 
 function requestGetPosts() {
-  return axios.get('https://jsonplaceholder.typicode.com/posts');
+  return axios.get('posts');
 }
 
 function* fetchingSaga() {
