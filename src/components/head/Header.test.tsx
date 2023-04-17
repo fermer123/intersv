@@ -8,10 +8,6 @@ import Header from './Header';
 
 const store = setupStore();
 describe('Header', () => {
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-
   test('toMatchSnapshot', () => {
     const tree = renderer
       .create(
