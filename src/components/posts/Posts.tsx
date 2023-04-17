@@ -12,6 +12,13 @@ const PostsItemsWrapper = styled(Stack)`
   gap: 1rem;
 `;
 
+const PaginationItems = styled(Pagination)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem 0;
+`;
+
 const Posts: FC = () => {
   const [currPage, setCurrPage] = useState<number>(1);
 
@@ -55,8 +62,7 @@ const Posts: FC = () => {
       {currentItem?.map((e) => (
         <PostItem key={e.id} {...e} />
       ))}
-
-      <Pagination
+      <PaginationItems
         page={currPage}
         count={pageNumber.length}
         onChange={pagination}
