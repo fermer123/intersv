@@ -9,12 +9,11 @@ function requestGetPosts() {
 
 function* fetchingSaga() {
   try {
-    BlogSlice.actions.fetchData();
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const {data}: {data: IPost[]} = yield call(requestGetPosts);
     yield put(BlogSlice.actions.fetchSuccess(data));
   } catch {
-    BlogSlice.actions.fetchDataError();
+    yield put(BlogSlice.actions.fetchDataError());
   }
 }
 
