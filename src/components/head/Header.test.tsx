@@ -26,6 +26,7 @@ describe('Header', () => {
     );
     const name = screen.getByLabelText('Введите имя');
     const comment = screen.getByLabelText('Введите комментарий');
+    const email = screen.getByLabelText('Введите e-mail');
 
     expect(screen.getAllByText(/поле не должно быть пустым/i)).toHaveLength(2);
     await userEvent.type(name, 'test');
@@ -36,5 +37,13 @@ describe('Header', () => {
     expect(screen.queryAllByText(/поле не должно быть пустым/i)).toHaveLength(
       0,
     );
+
+    expect(
+      screen.getByText(/неверный E-mail или пустое значение/i),
+    ).toBeInTheDocument();
+    await userEvent.type(email, 'test@mail.ru');
+    expect(
+      screen.queryByText(/неверный E-mail или пустое значение/i),
+    ).not.toBeInTheDocument();
   });
 });
