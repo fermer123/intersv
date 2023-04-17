@@ -1,7 +1,7 @@
 import {TextField} from '@mui/material';
 import {FC, ChangeEvent, memo} from 'react';
 
-interface IInputFormProps {
+export interface IInputFormProps {
   label: string;
   value: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;

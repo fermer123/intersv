@@ -63,6 +63,7 @@ const Posts: FC = () => {
         <PostItem key={e.id} {...e} />
       ))}
       <PaginationItems
+        color='primary'
         page={currPage}
         count={pageNumber.length}
         onChange={pagination}

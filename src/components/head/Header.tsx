@@ -63,7 +63,6 @@ const Header: FC<IHeaderProps> = ({parentId}) => {
           date: Date.now(),
         }),
       );
-
       name.setValue('');
       comment.setValue('');
       email.setValue('');
@@ -82,7 +81,7 @@ const Header: FC<IHeaderProps> = ({parentId}) => {
         />
       </TopContent>
       <Input label='Введите комментарий' name='comment' {...comment} />
-      <PostButton postData={postDataMemo} />
+      <PostButton data-testID='postData' postData={postDataMemo} />
     </InputFormWrapper>
   );
 };
