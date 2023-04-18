@@ -23,7 +23,7 @@ const Blog: FC<IBlogProps> = ({parentId}) => {
   const comments = useAppSelector((state) => state.Blog.comments);
   const isInArray = comments.filter((e) => e.parentId === parentId);
   return (
-    <BlogItemsWrapper overflow='scroll'>
+    <BlogItemsWrapper>
       {isInArray?.map((comment: IBlog) => (
         <BlogItem key={comment.id} {...comment} parentId={parentId} />
       ))}
