@@ -20,12 +20,14 @@ const CommentWrapperItem = styled(Card)`
   gap: 1rem;
   width: 100%;
   border: 1px solid #2196f3;
+  min-height: 168px;
 `;
 const CommentWrapperItemTopContent = styled(CardContent)`
   padding: 0 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
 `;
 
 const CommentWrapperItemTopContentInfo = styled(Box)`
