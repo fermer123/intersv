@@ -1,6 +1,6 @@
 import {Card, CardContent, Typography} from '@mui/material';
 import {IPost} from '@src/types/types';
-import {FC} from 'react';
+import {FC, memo} from 'react';
 import styled from 'styled-components';
 import Header from '../head/Header';
 import Blog from '../blog/Blog';
@@ -34,4 +34,4 @@ const PostItem: FC<IPost> = ({id, body, title}) => {
   );
 };
 
-export default PostItem;
+export default memo(PostItem);

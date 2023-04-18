@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import {useAppDispatch} from '@src/hooks/redux';
 import {IBlog} from '@src/types/types';
-import {FC, useCallback, useEffect, useState} from 'react';
+import {FC, useCallback, useEffect, useState, memo} from 'react';
 import styled from 'styled-components';
 import {addRaiting, subtractRaiting} from '@src/store/slice/BlogSlice';
 
@@ -125,4 +125,4 @@ const BlogItem: FC<IBlogItemProps> = ({
   );
 };
 
-export default BlogItem;
+export default memo(BlogItem);
