@@ -13,14 +13,14 @@ import {FC, useCallback, useEffect, useState, memo} from 'react';
 import styled from 'styled-components';
 import {addRaiting, subtractRaiting} from '@src/store/slice/BlogSlice';
 
-const CommentWrapperItem = styled(Card)`
+const CommentWrapperItem = styled(Card)<{open: boolean}>`
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 1rem;
   width: 100%;
   border: 1px solid #2196f3;
-  min-height: 168px;
+  min-height: ${({open}) => (open ? '24px' : '168px')};
 `;
 const CommentWrapperItemTopContent = styled(CardContent)`
   padding: 0 0;
@@ -44,7 +44,10 @@ const CommentWrapperItemTopContentInfoRaiting = styled(Box)`
 
 const CommentWrapperItemBottomContent = styled(CardContent)`
   align-self: flex-end;
-  padding: 0 0;
+  padding: 0;
+  &:last-child {
+    padding-bottom: 5;
+  }
 `;
 interface IBlogItemProps extends IBlog {
   parentId: number;
@@ -61,9 +64,6 @@ const BlogItem: FC<IBlogItemProps> = ({
   const [updateTimePassed, setUpdateTimePassed] = useState<string>();
   const [open, setOpen] = useState<boolean>(true);
   const dispatch = useAppDispatch();
-  const handleCommentOpen = useCallback(() => {
-    setOpen(!open);
-  }, [open]);
 
   // eslint-disable-next-line consistent-return
   const dateHandler = (currentDate: number, commentDate: number) => {
@@ -89,14 +89,23 @@ const BlogItem: FC<IBlogItemProps> = ({
     return () => clearInterval(interval);
   }, [date, updateTimePassed]);
 
+  const handleCommentOpen = useCallback(() => {
+    setOpen(!open);
+  }, [open]);
+
   return (
-    <CommentWrapperItem>
-      {raiting <= -10 && open ? (
+    <CommentWrapperItem open>
+      {raiting <= -1 && open ? (
         <Typography margin='0 auto' onClick={handleCommentOpen}>
           Открыть комментарий
         </Typography>
       ) : (
         <>
+          {raiting <= -1 && (
+            <Typography margin='0 auto' onClick={handleCommentOpen}>
+              Скрыть комментарий
+            </Typography>
+          )}
           <CommentWrapperItemTopContent>
             <CommentWrapperItemTopContentInfo>
               <Avatar>{[...name].slice(0, 1)}</Avatar>

@@ -4,6 +4,7 @@ import {Pagination, Stack} from '@mui/material';
 import styled from 'styled-components';
 import {fetchData} from '@src/store/slice/BlogSlice';
 import PostItem from '../postItem/PostItem';
+import ErrorLoading from '../errorLoading/ErrorLoading';
 
 const PostsItemsWrapper = styled(Stack)`
   display: flex;
@@ -51,11 +52,10 @@ const Posts: FC = () => {
   );
 
   if (loading) {
-    return <h1>loading</h1>;
+    return <ErrorLoading text='Loading' />;
   }
-
   if (error) {
-    return <h1>error</h1>;
+    return <ErrorLoading text='Error' />;
   }
   return (
     <PostsItemsWrapper>
