@@ -17,22 +17,14 @@ const InputForm: FC<IInputFormProps> = ({
   value,
   onChange,
   name,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   isValidEmail,
   onBlur,
   error,
 }) => {
-  const validate = (inputValue: string) => {
-    if (inputValue === 'email') {
-      return value.length ? '' : 'поле не должно быть пустым';
-    }
-    if (inputValue === 'name') {
-      return value.length ? '' : 'поле не должно быть пустым';
-    }
-    return value.length ? '' : 'поле не должно быть пустым';
-  };
-
   return (
     <TextField
+      name={name}
       onBlur={onBlur}
       error={error}
       value={value}
@@ -40,9 +32,10 @@ const InputForm: FC<IInputFormProps> = ({
       fullWidth
       label={label}
       variant='outlined'
-      helperText={`${validate(name)} ${
-        isValidEmail?.length ? isValidEmail : ''
-      }`}
+      helperText={error ? 'Поле не должно быть пустым' : null}
+      // helperText={error `${
+      //   isValidEmail?.length ? или ${isValidEmail} : ''
+      // }`}
     />
   );
 };

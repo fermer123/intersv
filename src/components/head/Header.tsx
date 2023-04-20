@@ -47,16 +47,39 @@ const Header: FC<IHeaderProps> = ({parentId}) => {
         /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
       if (!re.test(String(e.target.value).toLowerCase())) {
         setErrorEmailValidate('неверный E-mail');
-        return false;
       }
       setErrorEmailValidate('');
-      return true;
+
+      setErrorEmail(false);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [email.value],
+    [email.value, errorEmail, errorEmailValidate],
   );
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const isValidComment = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      comment.setValue(e.target.value);
+      if (comment.value.length < 2) {
+        setErrorComment(true);
+      } else {
+        setErrorComment(false);
+      }
+    },
+    [comment, setErrorComment],
+  );
+
+  const isValidName = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      name.setValue(e.target.value);
+      if (name.value.length < 2) {
+        setErrorName(true);
+      } else {
+        setErrorName(false);
+      }
+    },
+    [name],
+  );
+
   const blurHandler = (e: FocusEvent<HTMLInputElement>) => {
     // eslint-disable-next-line default-case
     switch (e.target.name) {
@@ -73,12 +96,7 @@ const Header: FC<IHeaderProps> = ({parentId}) => {
   };
 
   const postDataMemo = useCallback(() => {
-    if (
-      !errorName &&
-      !errorComment &&
-      !errorEmail &&
-      !errorEmailValidate.length
-    ) {
+    if (errorName && errorComment && errorEmail && !errorEmailValidate.length) {
       dispatch(
         addNewBlogItem({
           parentId,
@@ -114,7 +132,8 @@ const Header: FC<IHeaderProps> = ({parentId}) => {
           onBlur={blurHandler}
           label='Введите имя'
           name='name'
-          {...name}
+          value={name.value}
+          onChange={isValidName}
         />
         <Input
           error={errorEmail}
@@ -131,7 +150,8 @@ const Header: FC<IHeaderProps> = ({parentId}) => {
         onBlur={blurHandler}
         label='Введите комментарий'
         name='comment'
-        {...comment}
+        value={comment.value}
+        onChange={isValidComment}
       />
       <PostButton data-testID='postData' postData={postDataMemo} />
     </InputFormWrapper>
