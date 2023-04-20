@@ -1,5 +1,5 @@
 import {TextField} from '@mui/material';
-import {FC, ChangeEvent, memo} from 'react';
+import {FC, ChangeEvent, memo, FocusEvent} from 'react';
 
 export interface IInputFormProps {
   label: string;
@@ -8,6 +8,8 @@ export interface IInputFormProps {
   name: string;
   // eslint-disable-next-line react/require-default-props
   isValidEmail?: (value: string) => boolean;
+  onBlur: (e: FocusEvent<HTMLInputElement>) => void;
+  error: boolean;
 }
 
 const InputForm: FC<IInputFormProps> = ({
@@ -16,6 +18,8 @@ const InputForm: FC<IInputFormProps> = ({
   onChange,
   name,
   isValidEmail,
+  onBlur,
+  error,
 }) => {
   const validate = (inputValue: string) => {
     if (inputValue === 'email') {

@@ -20,6 +20,7 @@ const CommentWrapperItem = styled(Card)<{open: boolean}>`
   gap: 1rem;
   width: 100%;
   border: 1px solid #2196f3;
+  padding: 0 10;
   min-height: ${({open}) => (open ? '24px' : '168px')};
 `;
 const CommentWrapperItemTopContent = styled(CardContent)`
@@ -95,13 +96,13 @@ const BlogItem: FC<IBlogItemProps> = ({
 
   return (
     <CommentWrapperItem open>
-      {raiting <= -1 && open ? (
+      {raiting <= -10 && open ? (
         <Typography margin='0 auto' onClick={handleCommentOpen}>
           Открыть комментарий
         </Typography>
       ) : (
         <>
-          {raiting <= -1 && (
+          {raiting <= -10 && (
             <Typography margin='0 auto' onClick={handleCommentOpen}>
               Скрыть комментарий
             </Typography>

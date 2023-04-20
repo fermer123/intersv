@@ -1,7 +1,7 @@
 import {Container, Stack} from '@mui/material';
 import styled from 'styled-components';
 import useInput from '@src/hooks/Input';
-import {useCallback, FC} from 'react';
+import {useCallback, FC, FocusEvent, useState} from 'react';
 import {useAppDispatch} from '@src/hooks/redux';
 import {addNewBlogItem} from '@src/store/slice/BlogSlice';
 import {v4 as uuidv4} from 'uuid';
@@ -34,16 +34,39 @@ const Header: FC<IHeaderProps> = ({parentId}) => {
   const name = useInput();
   const email = useInput();
   const comment = useInput();
+  const [errorName, setErrorName] = useState<boolean>(false);
+  const [errorEmail, setErrorEmail] = useState<boolean>(false);
+  const [errorComment, setErrorComment] = useState<boolean>(false);
 
   const isValidEmail = useCallback(
-    (validateEmail: string) =>
-      // eslint-disable-next-line no-useless-escape
-      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
-        validateEmail,
-      ),
+    (validateEmail: string) => {
+      const re =
+        /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+      if (!re.test(String(validateEmail).toLowerCase())) {
+        setErrorEmail(false);
+      }
+    },
+
+    // eslint-disable-next-line no-useless-escape
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [email.value],
   );
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const blurHandlerEmail = (e: FocusEvent<HTMLInputElement>) => {
+    // eslint-disable-next-line default-case
+    switch (e.target.name) {
+      case 'name':
+        setErrorName(true);
+        break;
+      case 'comment':
+        setErrorComment(true);
+        break;
+      case 'email':
+        setErrorEmail(true);
+        break;
+    }
+  };
 
   const postDataMemo = useCallback(() => {
     if (
@@ -72,15 +95,29 @@ const Header: FC<IHeaderProps> = ({parentId}) => {
   return (
     <InputFormWrapper>
       <TopContent>
-        <Input label='Введите имя' name='name' {...name} />
         <Input
+          error={errorName}
+          onBlur={blurHandler}
+          label='Введите имя'
+          name='name'
+          {...name}
+        />
+        <Input
+          error={errorEmail}
+          onBlur={blurHandler}
           label='Введите e-mail'
           isValidEmail={isValidEmail}
           name='email'
           {...email}
         />
       </TopContent>
-      <Input label='Введите комментарий' name='comment' {...comment} />
+      <Input
+        error={errorComment}
+        onBlur={blurHandler}
+        label='Введите комментарий'
+        name='comment'
+        {...comment}
+      />
       <PostButton data-testID='postData' postData={postDataMemo} />
     </InputFormWrapper>
   );

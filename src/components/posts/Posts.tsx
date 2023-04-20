@@ -1,5 +1,12 @@
 import {useAppDispatch, useAppSelector} from '@src/hooks/redux';
-import {FC, useEffect, useCallback, useState, useMemo} from 'react';
+import {
+  FC,
+  useEffect,
+  useCallback,
+  useState,
+  useMemo,
+  ChangeEvent,
+} from 'react';
 import {Pagination, Stack} from '@mui/material';
 import styled from 'styled-components';
 import {fetchData} from '@src/store/slice/BlogSlice';
@@ -45,7 +52,7 @@ const Posts: FC = () => {
 
   const currentItem = posts.slice(firstItemIndex, lastItemIndex);
   const pagination = useCallback(
-    (event: React.ChangeEvent<unknown>, value: number) => {
+    (e: ChangeEvent<unknown>, value: number) => {
       setCurrPage(value);
     },
     [setCurrPage],
