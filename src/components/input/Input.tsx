@@ -7,7 +7,7 @@ export interface IInputFormProps {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   name: string;
   // eslint-disable-next-line react/require-default-props
-  isValidEmail?: (value: string) => boolean;
+  isValidEmail?: string;
   onBlur: (e: FocusEvent<HTMLInputElement>) => void;
   error: boolean;
 }
@@ -23,9 +23,7 @@ const InputForm: FC<IInputFormProps> = ({
 }) => {
   const validate = (inputValue: string) => {
     if (inputValue === 'email') {
-      return isValidEmail(value) && value.length
-        ? ''
-        : 'неверный E-mail или пустое значение';
+      return value.length ? '' : 'поле не должно быть пустым';
     }
     if (inputValue === 'name') {
       return value.length ? '' : 'поле не должно быть пустым';
@@ -35,12 +33,16 @@ const InputForm: FC<IInputFormProps> = ({
 
   return (
     <TextField
+      onBlur={onBlur}
+      error={error}
       value={value}
       onChange={onChange}
       fullWidth
       label={label}
       variant='outlined'
-      helperText={validate(name)}
+      helperText={`${validate(name)} ${
+        isValidEmail?.length ? isValidEmail : ''
+      }`}
     />
   );
 };

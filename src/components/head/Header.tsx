@@ -1,7 +1,7 @@
 import {Container, Stack} from '@mui/material';
 import styled from 'styled-components';
 import useInput from '@src/hooks/Input';
-import {useCallback, FC, FocusEvent, useState} from 'react';
+import {useCallback, FC, FocusEvent, useState, ChangeEvent} from 'react';
 import {useAppDispatch} from '@src/hooks/redux';
 import {addNewBlogItem} from '@src/store/slice/BlogSlice';
 import {v4 as uuidv4} from 'uuid';
@@ -36,24 +36,28 @@ const Header: FC<IHeaderProps> = ({parentId}) => {
   const comment = useInput();
   const [errorName, setErrorName] = useState<boolean>(false);
   const [errorEmail, setErrorEmail] = useState<boolean>(false);
+  const [errorEmailValidate, setErrorEmailValidate] = useState<string>('');
   const [errorComment, setErrorComment] = useState<boolean>(false);
 
   const isValidEmail = useCallback(
-    (validateEmail: string) => {
+    (e: ChangeEvent<HTMLInputElement>) => {
+      email.setValue(e.target.value);
       const re =
+        // eslint-disable-next-line no-useless-escape
         /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-      if (!re.test(String(validateEmail).toLowerCase())) {
-        setErrorEmail(false);
+      if (!re.test(String(e.target.value).toLowerCase())) {
+        setErrorEmailValidate('неверный E-mail');
+        return false;
       }
+      setErrorEmailValidate('');
+      return true;
     },
-
-    // eslint-disable-next-line no-useless-escape
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [email.value],
   );
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const blurHandlerEmail = (e: FocusEvent<HTMLInputElement>) => {
+  const blurHandler = (e: FocusEvent<HTMLInputElement>) => {
     // eslint-disable-next-line default-case
     switch (e.target.name) {
       case 'name':
@@ -70,10 +74,10 @@ const Header: FC<IHeaderProps> = ({parentId}) => {
 
   const postDataMemo = useCallback(() => {
     if (
-      name.value &&
-      email.value &&
-      comment.value &&
-      isValidEmail(email.value)
+      !errorName &&
+      !errorComment &&
+      !errorEmail &&
+      !errorEmailValidate.length
     ) {
       dispatch(
         addNewBlogItem({
@@ -90,7 +94,17 @@ const Header: FC<IHeaderProps> = ({parentId}) => {
       comment.setValue('');
       email.setValue('');
     }
-  }, [comment, dispatch, email, isValidEmail, name, parentId]);
+  }, [
+    comment,
+    dispatch,
+    email,
+    errorComment,
+    errorEmail,
+    errorEmailValidate.length,
+    errorName,
+    name,
+    parentId,
+  ]);
 
   return (
     <InputFormWrapper>
@@ -106,9 +120,10 @@ const Header: FC<IHeaderProps> = ({parentId}) => {
           error={errorEmail}
           onBlur={blurHandler}
           label='Введите e-mail'
-          isValidEmail={isValidEmail}
+          isValidEmail={errorEmailValidate}
           name='email'
-          {...email}
+          value={email.value}
+          onChange={isValidEmail}
         />
       </TopContent>
       <Input
