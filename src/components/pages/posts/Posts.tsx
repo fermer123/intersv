@@ -11,7 +11,7 @@ import {Pagination, Stack} from '@mui/material';
 import styled from 'styled-components';
 import {fetchData} from '@src/store/slice/BlogSlice';
 import PostItem from '../postItem/PostItem';
-import ErrorLoading from '../errorLoading/ErrorLoading';
+import ErrorLoading from '../../component/errorLoading/ErrorLoading';
 
 const PostsItemsWrapper = styled(Stack)`
   display: flex;

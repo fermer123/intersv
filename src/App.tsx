@@ -1,7 +1,7 @@
 import {Container} from '@mui/material';
 import {FC} from 'react';
 import styled from 'styled-components';
-import Posts from './components/posts/Posts';
+import Posts from './components/pages/posts/Posts';
 
 const AppContainer = styled(Container)`
   margin: 0 auto;

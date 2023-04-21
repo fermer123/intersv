@@ -1,7 +1,8 @@
 import {fireEvent, render, screen} from '@testing-library/react';
 import renderer from 'react-test-renderer';
-import PostButton, {IPostButtonProps} from './PostButton';
+
 import 'jest-styled-components';
+import PostButton, {IPostButtonProps} from './postButton';
 
 describe('postButton', () => {
   const action = jest.fn();

@@ -6,7 +6,7 @@ import {useAppDispatch} from '@src/hooks/redux';
 import {addNewBlogItem} from '@src/store/slice/BlogSlice';
 import {v4 as uuidv4} from 'uuid';
 import Input from '../input/Input';
-import PostButton from '../PostButton/PostButton';
+import PostButton from '../postButton/postButton';
 
 interface IHeaderProps {
   parentId: number;

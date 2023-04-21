@@ -2,7 +2,7 @@ import {Card, CardContent, Typography} from '@mui/material';
 import {IPost} from '@src/types/types';
 import {FC, memo} from 'react';
 import styled from 'styled-components';
-import Header from '../head/Header';
+import Header from '../../component/head/Header';
 import Blog from '../blog/Blog';
 
 const PostWrapperItem = styled(Card)`
