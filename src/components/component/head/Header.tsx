@@ -5,6 +5,8 @@ import {useCallback, FC, FocusEvent, useState, ChangeEvent} from 'react';
 import {useAppDispatch} from '@src/hooks/redux';
 import {addNewBlogItem} from '@src/store/slice/BlogSlice';
 import {v4 as uuidv4} from 'uuid';
+import {Field, Form, Formik, FormikHelpers} from 'formik';
+import * as Yup from 'yup';
 import Input from '../input/Input';
 import PostButton from '../postButton/postButton';
 
@@ -28,6 +30,12 @@ const TopContent = styled(Stack)`
     flex-direction: column;
   }
 `;
+
+interface IFormValue {
+  name: string;
+  comment: string;
+  email: string;
+}
 
 const Header: FC<IHeaderProps> = ({parentId}) => {
   const dispatch = useAppDispatch();
@@ -55,45 +63,6 @@ const Header: FC<IHeaderProps> = ({parentId}) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [email.value, errorEmail, errorEmailValidate],
   );
-
-  const isValidComment = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
-      comment.setValue(e.target.value);
-      if (comment.value.length < 2) {
-        setErrorComment(true);
-      } else {
-        setErrorComment(false);
-      }
-    },
-    [comment, setErrorComment],
-  );
-
-  const isValidName = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
-      name.setValue(e.target.value);
-      if (name.value.length < 2) {
-        setErrorName(true);
-      } else {
-        setErrorName(false);
-      }
-    },
-    [name],
-  );
-
-  const blurHandler = (e: FocusEvent<HTMLInputElement>) => {
-    // eslint-disable-next-line default-case
-    switch (e.target.name) {
-      case 'name':
-        setErrorName(true);
-        break;
-      case 'comment':
-        setErrorComment(true);
-        break;
-      case 'email':
-        setErrorEmail(true);
-        break;
-    }
-  };
 
   const postDataMemo = useCallback(() => {
     if (errorName && errorComment && errorEmail && !errorEmailValidate.length) {
@@ -124,18 +93,52 @@ const Header: FC<IHeaderProps> = ({parentId}) => {
     parentId,
   ]);
 
+  const SignupSchema = Yup.object().shape({
+    name: Yup.string()
+      .min(2, 'Too Short!')
+      .max(50, 'Too Long!')
+      .required('Required'),
+  });
+
+  const validationSchema = Yup.object().shape({
+    name: Yup.string()
+      .min(2, 'Too Short!')
+      .max(10, 'Too Long!')
+      .required('Required'),
+    // comment: Yup.string()
+    //   .min(2, 'Too Short!')
+    //   .max(100, 'Too Long!')
+    //   .required('Required'),
+    // email: Yup.string().required('Required'),
+  });
+
+  const initialValues: IFormValue = {
+    name: '',
+    email: '',
+    comment: '',
+  };
+  const onSubmit = (values: IFormValue, actions: FormikHelpers<IFormValue>) => {
+    console.log(values);
+    actions.resetForm();
+  };
   return (
-    <InputFormWrapper>
-      <TopContent>
-        <Input
-          error={errorName}
-          onBlur={blurHandler}
-          label='Введите имя'
-          name='name'
-          value={name.value}
-          onChange={isValidName}
-        />
-        <Input
+    <Formik
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={onSubmit}>
+      {({errors, touched, setFieldValue}) => (
+        <Form>
+          <InputFormWrapper>
+            <TopContent>
+              <Input
+                // error={errorName}
+                // onBlur={blurHandler}
+                label='Введите имя'
+                name='name'
+                onChange={setFieldValue}
+                // onChange={isValidName}
+              />
+              {/* <Input
           error={errorEmail}
           onBlur={blurHandler}
           label='Введите e-mail'
@@ -143,18 +146,20 @@ const Header: FC<IHeaderProps> = ({parentId}) => {
           name='email'
           value={email.value}
           onChange={isValidEmail}
-        />
-      </TopContent>
-      <Input
+        /> */}
+            </TopContent>
+            {/* <Input
         error={errorComment}
-        onBlur={blurHandler}
         label='Введите комментарий'
         name='comment'
         value={comment.value}
-        onChange={isValidComment}
-      />
-      <PostButton data-testID='postData' postData={postDataMemo} />
-    </InputFormWrapper>
+      /> */}
+            <button type='submit'>Submit</button>
+            {/* <PostButton data-testID='postData' postData={postDataMemo} /> */}
+          </InputFormWrapper>
+        </Form>
+      )}
+    </Formik>
   );
 };
 
