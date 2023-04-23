@@ -126,17 +126,17 @@ const Header: FC<IHeaderProps> = ({parentId}) => {
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={onSubmit}>
-      {({errors, touched, setFieldValue}) => (
+      {({errors, touched}) => (
         <Form>
           <InputFormWrapper>
             <TopContent>
-              <Input
+              <Field
                 // error={errorName}
                 // onBlur={blurHandler}
                 label='Введите имя'
                 name='name'
-                onChange={setFieldValue}
                 // onChange={isValidName}
+                component={Input}
               />
               {/* <Input
           error={errorEmail}
