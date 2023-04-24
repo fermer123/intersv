@@ -11,20 +11,19 @@ export interface IInputFormProps {
 const InputForm: FC<IInputFormProps & FieldProps> = ({
   label,
   error,
-  field,
+  field, // { name, value, onChange, onBlur }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  form,
+  form, // also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
   touched,
 }) => {
   return (
     <TextField
-      {...field} // { name, value, onChange, onBlur }
+      {...field}
       fullWidth
-      // onBlur={(e) => handleBlur(e)}
       label={label}
       variant='outlined'
       error={!!error && !!touched}
-      helperText={error}
+      helperText={!!error && !!touched ? error : null}
     />
   );
 };

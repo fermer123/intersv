@@ -33,7 +33,7 @@ const TopContent = styled(Stack)`
 `;
 
 const Header: FC<IHeaderProps> = ({parentId}) => {
-  // const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
 
   // const postDataMemo = useCallback(() => {
   //   if (errorName && errorComment && errorEmail && !errorEmailValidate.length) {
@@ -71,9 +71,11 @@ const Header: FC<IHeaderProps> = ({parentId}) => {
       .required('Поле не должо быть пустым'),
     comment: Yup.string()
       .min(3, 'Слишком короткий комментарий')
-      .max(10, 'Слишком длинный комментарий')
+      .max(100, 'Слишком длинный комментарий')
       .required('Поле не должо быть пустым'),
-    email: Yup.string().email().required('Поле не должо быть пустым'),
+    email: Yup.string()
+      .email('Неверный email')
+      .required('Поле не должо быть пустым'),
   });
 
   const initialValues: IFormValue = {
@@ -83,6 +85,17 @@ const Header: FC<IHeaderProps> = ({parentId}) => {
   };
   const onSubmit = (values: IFormValue, actions: FormikHelpers<IFormValue>) => {
     console.log(values);
+    dispatch(
+      addNewBlogItem({
+        parentId,
+        id: parseInt(uuidv4(), 36),
+        name: values.name,
+        comment: values.comment,
+        email: values.email,
+        raiting: 0,
+        date: Date.now(),
+      }),
+    );
     actions.resetForm();
   };
   return (
@@ -90,7 +103,7 @@ const Header: FC<IHeaderProps> = ({parentId}) => {
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={onSubmit}>
-      {({errors, touched}) => (
+      {({errors, touched, isSubmitting, dirty}) => (
         <Form>
           <InputFormWrapper>
             <TopContent>
@@ -101,7 +114,7 @@ const Header: FC<IHeaderProps> = ({parentId}) => {
                 name='name'
                 component={Input}
               />
-              <Input
+              <Field
                 error={errors.email}
                 touched={touched.email}
                 label='Введите email'
@@ -116,8 +129,12 @@ const Header: FC<IHeaderProps> = ({parentId}) => {
               name='comment'
               component={Input}
             />
-            <button type='submit'>Submit</button>
-            {/* <PostButton data-testID='postData' postData={postDataMemo} /> */}
+            <Field
+              disabled={!dirty || isSubmitting}
+              data-testID='postData'
+              type='submit'
+              component={PostButton}
+            />
           </InputFormWrapper>
         </Form>
       )}
