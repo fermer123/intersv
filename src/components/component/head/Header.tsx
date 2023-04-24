@@ -73,7 +73,7 @@ const Header: FC<IHeaderProps> = ({parentId}) => {
       .min(3, 'Слишком короткий комментарий')
       .max(10, 'Слишком длинный комментарий')
       .required('Поле не должо быть пустым'),
-    // email: Yup.string().required('Required'),
+    email: Yup.string().email().required('Поле не должо быть пустым'),
   });
 
   const initialValues: IFormValue = {
@@ -90,32 +90,28 @@ const Header: FC<IHeaderProps> = ({parentId}) => {
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={onSubmit}>
-      {({errors, touched, isValid, handleBlur}) => (
+      {({errors, touched}) => (
         <Form>
           <InputFormWrapper>
             <TopContent>
               <Field
                 error={errors.name}
-                // touched={touched.name}
-                handleBlur={handleBlur('name')}
+                touched={touched.name}
                 label='Введите имя'
                 name='name'
                 component={Input}
               />
-              {/* <Input
-          error={errorEmail}
-          onBlur={blurHandler}
-          label='Введите e-mail'
-          isValidEmail={errorEmailValidate}
-          name='email'
-          value={email.value}
-          onChange={isValidEmail}
-        /> */}
+              <Input
+                error={errors.email}
+                touched={touched.email}
+                label='Введите email'
+                name='email'
+                component={Input}
+              />
             </TopContent>
             <Field
               error={errors.comment}
-              // touched={touched.comment}
-              handleBlur={handleBlur('comment')}
+              touched={touched.comment}
               label='Введите комментарий'
               name='comment'
               component={Input}

@@ -5,6 +5,7 @@ import {FC, memo} from 'react';
 export interface IInputFormProps {
   label: string;
   error: string;
+  touched: boolean;
 }
 
 const InputForm: FC<IInputFormProps & FieldProps> = ({
@@ -13,15 +14,16 @@ const InputForm: FC<IInputFormProps & FieldProps> = ({
   field,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   form,
+  touched,
 }) => {
   return (
     <TextField
       {...field} // { name, value, onChange, onBlur }
-      onBlur={(e) => form.handleBlur(e)}
       fullWidth
+      // onBlur={(e) => handleBlur(e)}
       label={label}
       variant='outlined'
-      error={!!error}
+      error={!!error && !!touched}
       helperText={error}
     />
   );
