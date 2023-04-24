@@ -1,12 +1,13 @@
 import {Container, Stack} from '@mui/material';
 import styled from 'styled-components';
 import useInput from '@src/hooks/Input';
-import {useCallback, FC, FocusEvent, useState, ChangeEvent} from 'react';
+import {useCallback, FC, useState, ChangeEvent} from 'react';
 import {useAppDispatch} from '@src/hooks/redux';
 import {addNewBlogItem} from '@src/store/slice/BlogSlice';
 import {v4 as uuidv4} from 'uuid';
 import {Field, Form, Formik, FormikHelpers} from 'formik';
 import * as Yup from 'yup';
+import {IFormValue} from '@src/types/types';
 import Input from '../input/Input';
 import PostButton from '../postButton/postButton';
 
@@ -31,84 +32,47 @@ const TopContent = styled(Stack)`
   }
 `;
 
-interface IFormValue {
-  name: string;
-  comment: string;
-  email: string;
-}
-
 const Header: FC<IHeaderProps> = ({parentId}) => {
-  const dispatch = useAppDispatch();
-  const name = useInput();
-  const email = useInput();
-  const comment = useInput();
-  const [errorName, setErrorName] = useState<boolean>(false);
-  const [errorEmail, setErrorEmail] = useState<boolean>(false);
-  const [errorEmailValidate, setErrorEmailValidate] = useState<string>('');
-  const [errorComment, setErrorComment] = useState<boolean>(false);
+  // const dispatch = useAppDispatch();
 
-  const isValidEmail = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
-      email.setValue(e.target.value);
-      const re =
-        // eslint-disable-next-line no-useless-escape
-        /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-      if (!re.test(String(e.target.value).toLowerCase())) {
-        setErrorEmailValidate('неверный E-mail');
-      }
-      setErrorEmailValidate('');
-
-      setErrorEmail(false);
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [email.value, errorEmail, errorEmailValidate],
-  );
-
-  const postDataMemo = useCallback(() => {
-    if (errorName && errorComment && errorEmail && !errorEmailValidate.length) {
-      dispatch(
-        addNewBlogItem({
-          parentId,
-          id: parseInt(uuidv4(), 36),
-          name: name.value,
-          comment: comment.value,
-          email: email.value,
-          raiting: 0,
-          date: Date.now(),
-        }),
-      );
-      name.setValue('');
-      comment.setValue('');
-      email.setValue('');
-    }
-  }, [
-    comment,
-    dispatch,
-    email,
-    errorComment,
-    errorEmail,
-    errorEmailValidate.length,
-    errorName,
-    name,
-    parentId,
-  ]);
-
-  const SignupSchema = Yup.object().shape({
-    name: Yup.string()
-      .min(2, 'Too Short!')
-      .max(50, 'Too Long!')
-      .required('Required'),
-  });
+  // const postDataMemo = useCallback(() => {
+  //   if (errorName && errorComment && errorEmail && !errorEmailValidate.length) {
+  //     dispatch(
+  //       addNewBlogItem({
+  //         parentId,
+  //         id: parseInt(uuidv4(), 36),
+  //         name: name.value,
+  //         comment: comment.value,
+  //         email: email.value,
+  //         raiting: 0,
+  //         date: Date.now(),
+  //       }),
+  //     );
+  //     name.setValue('');
+  //     comment.setValue('');
+  //     email.setValue('');
+  //   }
+  // }, [
+  //   comment,
+  //   dispatch,
+  //   email,
+  //   errorComment,
+  //   errorEmail,
+  //   errorEmailValidate.length,
+  //   errorName,
+  //   name,
+  //   parentId,
+  // ]);
 
   const validationSchema = Yup.object().shape({
     name: Yup.string()
-      .min(2, 'Too Short!')
-      .max(10, 'Too Long!')
-      .required('Required'),
-    // comment: Yup.string()
-    //   .min(2, 'Too Short!')
-    //   .max(100, 'Too Long!')
-    //   .required('Required'),
+      .min(3, 'Слишком короткое имя')
+      .max(10, 'Слишком длинное имя')
+      .required('Поле не должо быть пустым'),
+    comment: Yup.string()
+      .min(3, 'Слишком короткий комментарий')
+      .max(10, 'Слишком длинный комментарий')
+      .required('Поле не должо быть пустым'),
     // email: Yup.string().required('Required'),
   });
 
@@ -126,16 +90,16 @@ const Header: FC<IHeaderProps> = ({parentId}) => {
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={onSubmit}>
-      {({errors, touched}) => (
+      {({errors, touched, isValid, handleBlur}) => (
         <Form>
           <InputFormWrapper>
             <TopContent>
               <Field
-                // error={errorName}
-                // onBlur={blurHandler}
+                error={errors.name}
+                // touched={touched.name}
+                handleBlur={handleBlur('name')}
                 label='Введите имя'
                 name='name'
-                // onChange={isValidName}
                 component={Input}
               />
               {/* <Input
@@ -148,12 +112,14 @@ const Header: FC<IHeaderProps> = ({parentId}) => {
           onChange={isValidEmail}
         /> */}
             </TopContent>
-            {/* <Input
-        error={errorComment}
-        label='Введите комментарий'
-        name='comment'
-        value={comment.value}
-      /> */}
+            <Field
+              error={errors.comment}
+              // touched={touched.comment}
+              handleBlur={handleBlur('comment')}
+              label='Введите комментарий'
+              name='comment'
+              component={Input}
+            />
             <button type='submit'>Submit</button>
             {/* <PostButton data-testID='postData' postData={postDataMemo} /> */}
           </InputFormWrapper>

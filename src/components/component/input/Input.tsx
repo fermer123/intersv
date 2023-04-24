@@ -2,42 +2,27 @@ import {TextField} from '@mui/material';
 import {FieldProps} from 'formik';
 import {FC, memo} from 'react';
 
-// field, // { name, value, onChange, onBlur }
-// form: { touched, errors }, // also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
-// type = "text",
-// ...props my props
 export interface IInputFormProps {
   label: string;
-  // value: string;
-
-  // eslint-disable-next-line react/require-default-props
-  //   isValidEmail?: string;
-  //   onBlur: (e: FocusEvent<HTMLInputElement>) => void;
+  error: string;
 }
 
 const InputForm: FC<IInputFormProps & FieldProps> = ({
   label,
-  // value,
+  error,
   field,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  // isValidEmail,
-  // onBlur,
+  form,
 }) => {
   return (
     <TextField
-      // name={name}
-      // onBlur={onBlur}
-      {...field}
-      // value={value}
-      // onChange={(e) => onChange(name, e.target.value)}
-      // onChange={handleChange}
+      {...field} // { name, value, onChange, onBlur }
+      onBlur={(e) => form.handleBlur(e)}
       fullWidth
       label={label}
       variant='outlined'
-      // helperText={error ? 'Поле не должно быть пустым' : null}
-      // helperText={error `${
-      //   isValidEmail?.length ? или ${isValidEmail} : ''
-      // }`}
+      error={!!error}
+      helperText={error}
     />
   );
 };

@@ -13,3 +13,9 @@ export interface IPost {
   title: string;
   body: string;
 }
+
+export interface IFormValue {
+  name: string;
+  comment: string;
+  email: string;
+}
