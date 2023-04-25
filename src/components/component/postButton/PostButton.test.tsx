@@ -19,7 +19,7 @@ describe('postButton', () => {
     const tree = renderer.create(<PostButton {...customProps} />).toJSON();
     expect(tree).toMatchSnapshot();
   });
-  test('postButton called', () => {
+  test('postButton not called', () => {
     render(<PostButton {...customProps} />);
     const linkElement = screen.getByRole('button');
     fireEvent.click(linkElement);
