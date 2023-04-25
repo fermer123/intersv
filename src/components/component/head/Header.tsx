@@ -54,7 +54,6 @@ const Header: FC<IHeaderProps> = ({parentId}) => {
     comment: '',
   };
   const onSubmit = (values: IFormValue, actions: FormikHelpers<IFormValue>) => {
-    console.log(values);
     dispatch(
       addNewBlogItem({
         parentId,
@@ -102,7 +101,13 @@ const Header: FC<IHeaderProps> = ({parentId}) => {
             />
           </Form>
           <PostButton
-            disabled={!dirty || isSubmitting}
+            disabled={
+              !dirty ||
+              isSubmitting ||
+              !!(errors.email && touched.email) ||
+              !!(errors.name && touched.name) ||
+              !!(errors.comment && touched.comment)
+            }
             data-testID='postData'
             onSubmit={handleSubmit}
           />
