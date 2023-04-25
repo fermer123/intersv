@@ -8,7 +8,7 @@ import {Field, Form, Formik, FormikHelpers} from 'formik';
 import * as Yup from 'yup';
 import {IFormValue} from '@src/types/types';
 import Input from '../input/Input';
-import PostButton from '../postButton/postButton';
+import PostButton from '../postButton/PostButton';
 
 interface IHeaderProps {
   parentId: number;
@@ -74,8 +74,8 @@ const Header: FC<IHeaderProps> = ({parentId}) => {
       validationSchema={validationSchema}
       onSubmit={onSubmit}>
       {({errors, touched, isSubmitting, dirty, handleSubmit}) => (
-        <InputFormWrapper>
-          <Form>
+        <Form>
+          <InputFormWrapper>
             <TopContent>
               <Field
                 error={errors.name}
@@ -99,19 +99,20 @@ const Header: FC<IHeaderProps> = ({parentId}) => {
               name='comment'
               component={Input}
             />
-          </Form>
-          <PostButton
-            disabled={
-              !dirty ||
-              isSubmitting ||
-              !!(errors.email && touched.email) ||
-              !!(errors.name && touched.name) ||
-              !!(errors.comment && touched.comment)
-            }
-            data-testID='postData'
-            onSubmit={handleSubmit}
-          />
-        </InputFormWrapper>
+
+            <PostButton
+              disabled={
+                !dirty ||
+                isSubmitting ||
+                !!(errors.email && touched.email) ||
+                !!(errors.name && touched.name) ||
+                !!(errors.comment && touched.comment)
+              }
+              data-testID='postData'
+              onSubmit={handleSubmit}
+            />
+          </InputFormWrapper>
+        </Form>
       )}
     </Formik>
   );

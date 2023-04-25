@@ -1,6 +1,5 @@
 import SendIcon from '@mui/icons-material/Send';
 import Button from '@mui/material/Button';
-
 import {FC, memo} from 'react';
 
 export interface IPostButtonProps {
@@ -20,5 +19,5 @@ const PostButton: FC<IPostButtonProps> = ({disabled, onSubmit}) => {
     </Button>
   );
 };
-
+// memo doesnt work without withFormik
 export default memo(PostButton);
