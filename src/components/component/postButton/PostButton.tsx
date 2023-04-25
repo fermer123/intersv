@@ -1,14 +1,21 @@
 import SendIcon from '@mui/icons-material/Send';
 import Button from '@mui/material/Button';
+
 import {FC, memo} from 'react';
 
 export interface IPostButtonProps {
-  postData: () => void;
+  onSubmit: () => void;
+  disabled: boolean;
 }
 
-const PostButton: FC<IPostButtonProps> = ({postData}) => {
+const PostButton: FC<IPostButtonProps> = ({disabled, onSubmit}) => {
   return (
-    <Button onClick={postData} variant='outlined' endIcon={<SendIcon />}>
+    <Button
+      type='submit'
+      onClick={onSubmit}
+      disabled={disabled}
+      variant='outlined'
+      endIcon={<SendIcon />}>
       Send
     </Button>
   );

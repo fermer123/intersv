@@ -1,7 +1,6 @@
 import {Container, Stack} from '@mui/material';
 import styled from 'styled-components';
-import useInput from '@src/hooks/Input';
-import {useCallback, FC, useState, ChangeEvent} from 'react';
+import {FC} from 'react';
 import {useAppDispatch} from '@src/hooks/redux';
 import {addNewBlogItem} from '@src/store/slice/BlogSlice';
 import {v4 as uuidv4} from 'uuid';
@@ -35,39 +34,10 @@ const TopContent = styled(Stack)`
 const Header: FC<IHeaderProps> = ({parentId}) => {
   const dispatch = useAppDispatch();
 
-  // const postDataMemo = useCallback(() => {
-  //   if (errorName && errorComment && errorEmail && !errorEmailValidate.length) {
-  //     dispatch(
-  //       addNewBlogItem({
-  //         parentId,
-  //         id: parseInt(uuidv4(), 36),
-  //         name: name.value,
-  //         comment: comment.value,
-  //         email: email.value,
-  //         raiting: 0,
-  //         date: Date.now(),
-  //       }),
-  //     );
-  //     name.setValue('');
-  //     comment.setValue('');
-  //     email.setValue('');
-  //   }
-  // }, [
-  //   comment,
-  //   dispatch,
-  //   email,
-  //   errorComment,
-  //   errorEmail,
-  //   errorEmailValidate.length,
-  //   errorName,
-  //   name,
-  //   parentId,
-  // ]);
-
   const validationSchema = Yup.object().shape({
     name: Yup.string()
       .min(3, 'Слишком короткое имя')
-      .max(10, 'Слишком длинное имя')
+      .max(20, 'Слишком длинное имя')
       .required('Поле не должо быть пустым'),
     comment: Yup.string()
       .min(3, 'Слишком короткий комментарий')
@@ -97,15 +67,16 @@ const Header: FC<IHeaderProps> = ({parentId}) => {
       }),
     );
     actions.resetForm();
+    actions.setSubmitting(false);
   };
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={onSubmit}>
-      {({errors, touched, isSubmitting, dirty}) => (
-        <Form>
-          <InputFormWrapper>
+      {({errors, touched, isSubmitting, dirty, handleSubmit}) => (
+        <InputFormWrapper>
+          <Form>
             <TopContent>
               <Field
                 error={errors.name}
@@ -129,14 +100,13 @@ const Header: FC<IHeaderProps> = ({parentId}) => {
               name='comment'
               component={Input}
             />
-            <Field
-              disabled={!dirty || isSubmitting}
-              data-testID='postData'
-              type='submit'
-              component={PostButton}
-            />
-          </InputFormWrapper>
-        </Form>
+          </Form>
+          <PostButton
+            disabled={!dirty || isSubmitting}
+            data-testID='postData'
+            onSubmit={handleSubmit}
+          />
+        </InputFormWrapper>
       )}
     </Formik>
   );
