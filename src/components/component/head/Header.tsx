@@ -108,7 +108,6 @@ const Header: FC<IHeaderProps> = ({parentId}) => {
                 !!(errors.name && touched.name) ||
                 !!(errors.comment && touched.comment)
               }
-              data-testID='postData'
               onSubmit={handleSubmit}
             />
           </InputFormWrapper>

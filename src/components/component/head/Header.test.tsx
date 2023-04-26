@@ -1,4 +1,4 @@
-import {render, screen} from '@testing-library/react';
+import {render, screen, waitFor} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import renderer from 'react-test-renderer';
 import 'jest-styled-components';
@@ -18,32 +18,45 @@ describe('Header', () => {
       .toJSON();
     expect(tree).toMatchSnapshot();
   });
-  test('validate', async () => {
+  test('renders Header component', () => {
     render(
       <Provider store={store}>
         <Header parentId={1} />
       </Provider>,
     );
-    const name = screen.getByLabelText('Введите имя');
-    const comment = screen.getByLabelText('Введите комментарий');
-    const email = screen.getByLabelText('Введите e-mail');
-
-    expect(screen.getAllByText(/поле не должно быть пустым/i)).toHaveLength(2);
+    expect(screen.getByLabelText('Введите имя')).toBeInTheDocument();
+    expect(screen.getByLabelText('Введите email')).toBeInTheDocument();
+    expect(screen.getByLabelText('Введите комментарий')).toBeInTheDocument();
+    expect(screen.getByTestId('postData')).toBeInTheDocument();
+  });
+  test('disabled submitButton', async () => {
+    render(
+      <Provider store={store}>
+        <Header parentId={1} />
+      </Provider>,
+    );
+    const name = screen.getByLabelText(/введите имя/i);
+    const comment = screen.getByLabelText(/введите комментарий/i);
+    const email = screen.getByLabelText(/введите email/i);
+    const submitButton = screen.getByTestId('postData');
+    await userEvent.type(name, '  ');
+    await userEvent.type(email, 'invalid-email');
+    await userEvent.type(comment, 'short');
+    await waitFor(() => expect(submitButton).toBeDisabled());
+  });
+  test('enable submitButton', async () => {
+    render(
+      <Provider store={store}>
+        <Header parentId={1} />
+      </Provider>,
+    );
+    const name = screen.getByLabelText(/введите имя/i);
+    const comment = screen.getByLabelText(/введите комментарий/i);
+    const email = screen.getByLabelText(/введите email/i);
+    const submitButton = screen.getByTestId('postData');
     await userEvent.type(name, 'test');
-    expect(screen.queryAllByText(/поле не должно быть пустым/i)).toHaveLength(
-      1,
-    );
-    await userEvent.type(comment, 'test');
-    expect(screen.queryAllByText(/поле не должно быть пустым/i)).toHaveLength(
-      0,
-    );
-
-    expect(
-      screen.getByText(/неверный E-mail или пустое значение/i),
-    ).toBeInTheDocument();
     await userEvent.type(email, 'test@mail.ru');
-    expect(
-      screen.queryByText(/неверный E-mail или пустое значение/i),
-    ).not.toBeInTheDocument();
+    await userEvent.type(comment, 'test');
+    await waitFor(() => expect(submitButton).toBeEnabled());
   });
 });

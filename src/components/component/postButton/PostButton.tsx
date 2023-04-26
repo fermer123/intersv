@@ -10,6 +10,7 @@ export interface IPostButtonProps {
 const PostButton: FC<IPostButtonProps> = ({disabled, onSubmit}) => {
   return (
     <Button
+      data-testid='postData'
       type='submit'
       onClick={onSubmit}
       disabled={disabled}
