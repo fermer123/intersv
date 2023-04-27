@@ -1,13 +1,14 @@
-import {renderHook, screen, render, fireEvent} from '@testing-library/react';
+import {renderHook, screen, render} from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import useInput from './Input';
 
-describe('useinput', () => {
+describe('useInputHook', () => {
   test('value', () => {
     const {result} = renderHook(() => useInput());
     expect(result.current.value).toBe('');
     expect(result.current.onChange).toBeInstanceOf(Function);
   });
-  test('onChange', () => {
+  test('onChange', async () => {
     const TestComponent = () => {
       const input = useInput();
       return (
@@ -18,7 +19,7 @@ describe('useinput', () => {
             value={input.value}
             onChange={input.onChange}
           />
-          <p data-testId='test-value'>{input.value}</p>
+          <p data-testid='test-value'>{input.value}</p>
         </div>
       );
     };
@@ -26,7 +27,7 @@ describe('useinput', () => {
     const inputElement = screen.getByTestId('test-input');
     const valueElement = screen.getByTestId('test-value');
     expect(valueElement.textContent).toBe('');
-    fireEvent.change(inputElement, {target: {value: 'testing input'}});
+    await userEvent.type(inputElement, 'testing input');
     expect(valueElement.textContent).toBe('testing input');
   });
 });

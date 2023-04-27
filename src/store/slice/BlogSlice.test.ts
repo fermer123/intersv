@@ -4,6 +4,7 @@ import BlogSlice, {
   IBlogState,
   addNewBlogItem,
   addRaiting,
+  fetchSuccess,
   subtractRaiting,
 } from './BlogSlice';
 
@@ -168,5 +169,19 @@ describe('BlogSlice', () => {
         },
       ],
     });
+  });
+  test('fetch success', () => {
+    // eslint-disable-next-line @typescript-eslint/no-shadow
+    const initialState: IBlogState = {
+      loading: false,
+      error: false,
+      posts: [],
+      comments: [],
+    };
+    const payload = [{id: 1, title: 'test', body: 'test'}];
+    const nextState = BlogSlice(initialState, fetchSuccess(payload));
+    expect(nextState.loading).toBe(false);
+    expect(nextState.posts).toEqual(payload);
+    expect(nextState.error).toBe(false);
   });
 });
