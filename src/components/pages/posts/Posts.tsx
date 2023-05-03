@@ -29,9 +29,7 @@ const PaginationItems = styled(Pagination)`
 
 const Posts: FC = () => {
   const [currPage, setCurrPage] = useState<number>(1);
-
   const [itemsPerPage] = useState(5);
-
   const dispatch = useAppDispatch();
   const posts = useAppSelector((state) => state.Blog.posts);
   const error = useAppSelector((state) => state.Blog.error);

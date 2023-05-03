@@ -6,7 +6,7 @@ interface IErrorLoadingProps {
 }
 const ErrorLoading: FC<IErrorLoadingProps> = ({text}) => {
   return (
-    <Typography textAlign='center' variant='h1'>
+    <Typography data-testie='ErrorLoading' textAlign='center' variant='h1'>
       {text}
     </Typography>
   );
