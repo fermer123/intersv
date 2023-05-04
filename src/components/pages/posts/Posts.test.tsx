@@ -35,7 +35,7 @@ describe('Posts', () => {
       </Provider>,
     );
     const payload = [{id: 1, title: 'test', body: 'test'}];
-    const linkElement = screen.queryByTestId('postItem - Title');
+    const linkElement = screen.queryByTestId('postItem');
     expect(linkElement).not.toBeInTheDocument();
     const fetching = BlogSlice(initialState, fetchData());
     expect(fetching.loading).toBeTruthy();

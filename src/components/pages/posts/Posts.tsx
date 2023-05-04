@@ -65,7 +65,7 @@ const Posts: FC = () => {
   return (
     <PostsItemsWrapper>
       {currentItem?.map((e) => (
-        <PostItem key={e.id} {...e} />
+        <PostItem key={e.id} {...e} data-testid='postItem' />
       ))}
       <PaginationItems
         color='primary'

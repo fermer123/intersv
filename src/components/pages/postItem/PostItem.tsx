@@ -25,9 +25,7 @@ const PostItem: FC<IPost> = ({id, body, title}) => {
   return (
     <PostWrapperItem>
       <CardContent>
-        <PostWrapperItemProps data-testid='postItem-Title'>
-          {title}
-        </PostWrapperItemProps>
+        <PostWrapperItemProps>{title}</PostWrapperItemProps>
         <PostWrapperItemProps>{body}</PostWrapperItemProps>
       </CardContent>
       <Header parentId={id} />
